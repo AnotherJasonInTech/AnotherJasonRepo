@@ -16,7 +16,14 @@ highscore = None
 
 while True:
         
-    guess = int(input("Please Guess: "))
+    guess = input("Please Guess: ")
+    
+    try:
+        guess = int(guess)
+    except ValueError:
+        print("That was not a number, Please Try again.")
+        continue
+    
     tries += 1
 
     if guess != answer:
