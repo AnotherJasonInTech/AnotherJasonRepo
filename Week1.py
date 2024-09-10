@@ -9,17 +9,26 @@ guess the number, and the program provides feedback such as
 the total attempts.
 '''
 from random import randint
-print("High / Low Guessing Game")
+import os
+
+
+os.system('clear')
 answer = randint(10,100)
 tries = 0
 highscore = None
-
+prevGueses = []
 while True:
+
+    if tries == 0:
+        print("\033[32mHigh / Low Guessing Game \033[0m")
+        print("I have thought of a number between \033[32m1\033[0m and \033[32m100\033[0m!")
+
         
-    guess = input("Please Guess: ")
+    guess = input("What is your guess: ")
     
     try:
         guess = int(guess)
+        prevGueses.append(guess)
     except ValueError:
         print("That was not a number, Please Try again.")
         continue
@@ -28,30 +37,48 @@ while True:
 
     if guess != answer:
         if guess < answer:
-            print ("Your Guess was too low. Please Try again.")
+            print ("Your Guess was \033[34mtoo low\033[0m. Please Try again.")
         else:
-            print ("Your Guess was too high. Please Try again.")
-        print ("Number of Tries = ", tries)
+            print ("Your Guess was \033[31mtoo high\033[0m. Please Try again.")
+        print ("\nNumber of Tries = ", tries)
+        print ("Your Previous Gueses: ", end="")
+        for i, displayGuesses in enumerate(prevGueses):
+            if displayGuesses < answer:
+                print("\033[34m", end="")
+            else:
+                print("\033[31m", end="")
+
+           
+            if i == 0:
+                print(displayGuesses, end="")
+            elif i < len(prevGueses)-1:
+                print(",",displayGuesses, end = ",")
+            else:
+                print("",displayGuesses, end="")
+        print("\033[0m")
+
     else:
-        print ("You got it!")
-        print ("Number of Tries = ", tries)
+        print ("\n\033[35mYou guessed it!\033[0m")
+        print ("Number of Tries =\033[32m", tries,"\033[0m")
 
         if highscore == None:
             highscore = tries           
         else:
             if tries < highscore:  
                 highscore = tries
-                print("NEW HIGH SCORE = ", highscore, "!!!")
+                print("NEW HIGH SCORE =", highscore, "!!!")
             else:
-                print("Current High Score: ", highscore)
+                print("Current High Score:", highscore)
 
         
         while True:
-            replay = input("Would you like to play again? (y/n)")
+            replay = input("Would you like to play again (y/n)? ")
             if replay == "y":
                 exit = False
                 tries = 0
                 answer = randint(10,100)
+                prevGueses = []
+                os.system('clear')
                 break
             if replay == "n":
                 exit = True
