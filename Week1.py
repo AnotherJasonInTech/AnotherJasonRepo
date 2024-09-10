@@ -11,12 +11,32 @@ the total attempts.
 from random import randint
 import os
 
+def rainbow_text(text):
+    colors = ['\033[31m', '\033[32m', '\033[33m', '\033[34m', '\033[35m', '\033[36m']
+    bgcolors = ['\033[41m', '\033[42m', '\033[43m', '\033[44m', '\033[45m', '\033[46m']
 
+    reset = '\033[0m'
+    randFG = 0
+    randBG = 0
+    for i, char in enumerate(text):
+        if char == " ":
+            print(reset + char, end="")
+            randFG = randint(0,len(colors)-1)
+            randBG = randint(0,len(bgcolors)-1)
+            continue
+        print(colors[randFG] + bgcolors[randBG] + char, end="")
+    
+    print(reset, end="")  # Reset color after the loop
+
+
+#initialize the Game
 os.system('clear')
 answer = randint(10,100)
 tries = 0
 highscore = None
 prevGueses = []
+
+#game loop
 while True:
 
     if tries == 0:
@@ -44,35 +64,37 @@ while True:
         print ("Your Previous Gueses: ", end="")
         for i, displayGuesses in enumerate(prevGueses):
             if displayGuesses < answer:
-                print("\033[34m", end="")
-            else:
-                print("\033[31m", end="")
+                print("\033[34m", end="(L)")
+            elif displayGuesses > answer:
+                print("\033[31m", end="(H)")
 
            
-            if i == 0:
-                print(displayGuesses, end="")
-            elif i < len(prevGueses)-1:
-                print(",",displayGuesses, end = ",")
+            #if i == 0:
+            #    print(displayGuesses, end="")
+            if i < len(prevGueses)-1:
+                print(displayGuesses, end = "\033[0m, ")
             else:
-                print("",displayGuesses, end="")
-        print("\033[0m")
+                print(displayGuesses, end="\033[0m")
+        print("")
 
     else:
         print ("\n\033[35mYou guessed it!\033[0m")
         print ("Number of Tries =\033[32m", tries,"\033[0m")
 
         if highscore == None:
-            highscore = tries           
+            highscore = tries
+            print("\033[33mHIGH SCORE =",highscore, end="\033[m" )           
         else:
             if tries < highscore:  
                 highscore = tries
-                print("NEW HIGH SCORE =", highscore, "!!!")
+                rainbow_text("NEW HIGH SCORE")
+                print (" =", highscore, end="")           
             else:
                 print("Current High Score:", highscore)
 
         
         while True:
-            replay = input("Would you like to play again (y/n)? ")
+            replay = input("\nWould you like to play again (y/n)? ")
             if replay == "y":
                 exit = False
                 tries = 0
