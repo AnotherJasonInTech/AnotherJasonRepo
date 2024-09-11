@@ -9,7 +9,8 @@ guess the number, and the program provides feedback such as
 the total attempts.
 '''
 from random import randint
-import os
+import os, shutil
+cWidth = shutil.get_terminal_size().columns
 
 def rainbow_text(text):
     colors = ['\033[31m', '\033[32m', '\033[33m', '\033[34m', '\033[35m', '\033[36m']
@@ -28,6 +29,22 @@ def rainbow_text(text):
     
     print(reset, end="")  # Reset color after the loop
 
+def titleMaker(message, cWidth):
+
+    cenDigit = len(message)
+    i = 0
+    while i < cWidth:
+        if message == "none":
+            print ("*", end="")
+            i += 1
+        else:    
+            if i == int(cWidth / 2) - int(cenDigit/2):
+                print("",message, end=" ")
+                i = i + cenDigit + 4
+            else:
+                print ("*", end="")
+                i += 1
+    print()
 
 #initialize the Game
 os.system('clear')
@@ -40,9 +57,8 @@ prevGueses = []
 while True:
 
     if tries == 0:
-        print("\033[32mHigh / Low Guessing Game \033[0m")
-        print("I have thought of a number between \033[32m1\033[0m and \033[32m100\033[0m!")
-
+        titleMaker("High / Low Guessing Game", cWidth)
+        titleMaker("I have thought of a number between 1 and 100!", cWidth)
         
     guess = input("What is your guess: ")
     
