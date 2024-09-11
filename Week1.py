@@ -29,22 +29,25 @@ def rainbow_text(text):
     
     print(reset, end="")  # Reset color after the loop
 
-def titleMaker(message, cWidth):
+def titleMaker(message, cWidth, fgcolor, bgcolor):
 
     cenDigit = len(message)
     i = 0
+    fgcolor = str("\033["+ str(fgcolor) +"m")
+    bgcolor = str("\033["+ str(bgcolor) +"m")
     while i < cWidth:
         if message == "none":
             print ("*", end="")
             i += 1
         else:    
-            if i == int(cWidth / 2) - int(cenDigit/2):
-                print("",message, end=" ")
+            if i == int(cWidth / 2) - (int(cenDigit/2)+2):
+                print(fgcolor,bgcolor, end="")
+                print("", message, end=" \033[0m ")
                 i = i + cenDigit + 4
             else:
                 print ("*", end="")
                 i += 1
-    print()
+    print("")
 
 #initialize the Game
 os.system('clear')
@@ -57,8 +60,8 @@ prevGueses = []
 while True:
 
     if tries == 0:
-        titleMaker("High / Low Guessing Game", cWidth)
-        titleMaker("I have thought of a number between 1 and 100!", cWidth)
+        titleMaker("High / Low Guessing Game", cWidth, randint(90,98), randint(40,48))
+        titleMaker("I have thought of a number between 1 and 100!", cWidth, randint(90,98),randint(40,48))
         
     guess = input("What is your guess: ")
     
@@ -73,10 +76,10 @@ while True:
 
     if guess != answer:
         if guess < answer:
-            print ("Your Guess was \033[34mtoo low\033[0m. Please Try again.")
+            print ("\nYour Guess was \033[34mtoo low\033[0m. Please Try again.")
         else:
-            print ("Your Guess was \033[31mtoo high\033[0m. Please Try again.")
-        print ("\nNumber of Tries = ", tries)
+            print ("\nYour Guess was \033[31mtoo high\033[0m. Please Try again.")
+        print ("Number of Tries = ", tries)
         print ("Your Previous Gueses: ", end="")
         for i, displayGuesses in enumerate(prevGueses):
             if displayGuesses < answer:
@@ -91,7 +94,7 @@ while True:
                 print(displayGuesses, end = "\033[0m, ")
             else:
                 print(displayGuesses, end="\033[0m")
-        print("")
+        print("\n")
 
     else:
         print ("\n\033[35mYou guessed it!\033[0m")
