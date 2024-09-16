@@ -12,6 +12,21 @@ from random import randint
 import os, shutil
 cWidth = shutil.get_terminal_size().columns
 
+
+def save_high_score(score, filename='high_scores.txt'):
+    with open(filename, 'w') as file:  # 'a' for append, so new scores are added to the file
+        file.write(f"{score}\n")
+    print(f"High score {score} saved to {filename}")
+
+def load_high_scores(filename='high_scores.txt'):
+    try:
+        with open(filename, 'r') as file:
+            scores = [int(line.strip()) for line in file.readlines()]
+        return scores[0]
+    except FileNotFoundError:
+        print(f"{filename} not found. No scores saved yet.")
+        return []
+
 def rainbow_text(text):
     colors = ['\033[31m', '\033[32m', '\033[33m', '\033[34m', '\033[35m', '\033[36m']
     bgcolors = ['\033[41m', '\033[42m', '\033[43m', '\033[44m', '\033[45m', '\033[46m']
@@ -53,7 +68,7 @@ def titleMaker(message, cWidth, fgcolor, bgcolor):
 os.system('clear')
 answer = randint(10,100)
 tries = 0
-highscore = None
+highscore = load_high_scores()
 prevGueses = []
 
 #game loop
@@ -100,16 +115,19 @@ while True:
         print ("\n\033[35mYou guessed it!\033[0m")
         print ("Number of Tries =\033[32m", tries,"\033[0m")
 
-        if highscore == None:
+        # if highscore == None:
+        #     highscore = tries
+        #     print("\033[33mHIGH SCORE =",highscore, end="\033[m" ) 
+        #     save_high_score(highscore)          
+        # else:
+        if tries < highscore:  
             highscore = tries
-            print("\033[33mHIGH SCORE =",highscore, end="\033[m" )           
+            rainbow_text("NEW HIGH SCORE")
+            print (" =", highscore, end="") 
+            save_high_score(highscore)          
+        
         else:
-            if tries < highscore:  
-                highscore = tries
-                rainbow_text("NEW HIGH SCORE")
-                print (" =", highscore, end="")           
-            else:
-                print("Current High Score:", highscore)
+            print("Current High Score:", highscore)
 
         
         while True:
