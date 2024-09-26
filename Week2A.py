@@ -20,9 +20,13 @@ while True:
   try:
     number = input("What is your number (0 to Exit): ")
     number = int(number)
+    if number < 0:
+      print("Can not use negative number. Please Try again.")
+      continue
 
   except:
     print("invalid entry. Please Try again")
+    continue
   
   if number == 0:
     break
