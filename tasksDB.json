@@ -1,0 +1,32 @@
+[
+    {
+        "task": "Test",
+        "date": "2024-09-28 11:27:46",
+        "completed": true
+    },
+    {
+        "task": "Another tester task",
+        "date": "2024-09-28 11:28:20",
+        "completed": true
+    },
+    {
+        "task": "This is pretty cool",
+        "date": "2024-09-28 11:28:27",
+        "completed": true
+    },
+    {
+        "task": "New date",
+        "date": "09.28.24 11:37:31",
+        "completed": true
+    },
+    {
+        "task": "Another one",
+        "date": "09.28.24 11:42:53",
+        "completed": true
+    },
+    {
+        "task": "Tester add",
+        "date": "09.28.24 11:44:14",
+        "completed": false
+    }
+]

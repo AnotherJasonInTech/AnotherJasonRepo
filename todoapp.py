@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 def parseInput(userInput):
 
@@ -13,38 +14,60 @@ def parseInput(userInput):
     return str(command).upper(), task.capitalize()
 
 
-
-
-database = [] 
-
+try: 
+    with open('tasksDB.json', 'r') as json_file:
+        database = json.load(json_file)
+except: 
+    with open('tasksDB.json', 'w') as json_file:
+        json_file.write('')
+        database = []
 
 while True:
-   
+    print()
+    print("ADD | UPDATE | DELETE | LIST | MARK")
     userInput = input("Enter a Command:")
 
     command, task = parseInput(userInput)
 
     if command == "ADD":
-        database.append(task)
-
+        newEntry = {"task":task,"date":datetime.now().strftime("%m.%d.%y %H:%M:%S"),"completed": False}
+        database.append(newEntry)
+        print ("ADDED:", newEntry["task"],"|", "Created:",  newEntry["date"])
+    
     if command == "UPDATE":
         item, updatedtask = parseInput(task)
-        database[int(item)-1] = updatedtask
+        database[int(item)-1]["task"] = updatedtask
+
+    if command == "DELETE":
+        try: 
+            delTaskNumber = int(task)-1
+        except: 
+            print("Error. Please Try again")
+        deleted = database[delTaskNumber]
+        del database[delTaskNumber]
+        print ("DELETED:", deleted["task"],"|", "Created:",  deleted["date"])
+
 
     if command == "LIST":
-        counter = 1
-        for i in database:
+        for index, entry in enumerate(database):
+            if entry["completed"] == True:
+                checkmark = "[X]"
+            else:
+                checkmark = "[ ]"
             
-            print (counter,"-",i, end="")
-            print ()
-            counter += 1
- 
-    if command == "DELETE":
-        item, updatedtask = parseInput(task)
-        del database[int(item)-1]
-        
+            print (index + 1, "-", checkmark, entry["task"],"|", "Created:",  entry["date"])
+                
 
-    if command == "EXIT":
-        break
+        continue
 
-print (database)
+    if command == "MARK":
+        try: 
+            MarkTaskNumber = int(task)-1
+        except: 
+            print("Error. Please Try again")
+       
+        database[int(MarkTaskNumber)]["completed"] = True
+
+
+    with open('tasksDB.json', 'w') as json_file:
+        json.dump(database, json_file, indent=4)
